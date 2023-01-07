@@ -36,6 +36,21 @@ public class Pawn : BaseUnit
             validTiles.Add(forwardRight);
         }
 
+        if(timesMoved > 0)
+        {
+            return validTiles;
+        }
+
+
+        Vector3Int forwardTwo = currentTilePosition + (forwardOrientation*2);
+        //Check forward position for a validity and for a unit.
+        unitToCheck = ChessManager.Instance.CheckForUnitAtTile(forwardTwo);
+        if (ChessManager.Instance.CheckValidTile(forwardTwo) && unitToCheck == null)
+        {
+            validTiles.Add(forwardTwo);
+        }
+
+
         return validTiles;
 
     }

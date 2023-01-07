@@ -28,6 +28,10 @@ public class ChessManager : UnitySingleton<ChessManager>
     public bool isPlayerTurn = true;
     public TurnState currentTurnState = TurnState.FriendlyUnitSelect;
 
+    [Header("Board Stages")]
+    public int currentBoardStage;
+    public List<BoardStageBehaviour> boardStages;
+
     [Header("Events")]
     public UnityEvent OnUnitSelectedEvent;
 
@@ -53,7 +57,12 @@ public class ChessManager : UnitySingleton<ChessManager>
 
         if (Input.GetKeyDown(KeyCode.P))
         {
-            
+            DebugDisplaySelectableTiles();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            AddValidTiles(availableTile);
         }
     }
 
@@ -79,6 +88,26 @@ public class ChessManager : UnitySingleton<ChessManager>
         ClearSelectableTiles();
 
         
+        foreach (Vector3Int tile in selectedUnit.GetValidTiles())
+        {
+            currentlyAvailableTiles.Add(tile);
+            visibleTilemap.SetTile(tile, availableTile);
+        }
+    }
+
+    public void DebugDisplaySelectableTiles()
+    {
+        if (selectedUnit == null)
+        {
+            ClearSelectableTiles();
+            return;
+        }
+
+        selectedUnit.SetStartingTile();
+
+        ClearSelectableTiles();
+
+
         foreach (Vector3Int tile in selectedUnit.GetValidTiles())
         {
             currentlyAvailableTiles.Add(tile);
@@ -192,7 +221,7 @@ public class ChessManager : UnitySingleton<ChessManager>
                     break;
                 }
                 
-                if(unitAtTile != null && unitAtTile.faction == BaseUnit.Faction.Friendly)
+                if(unitAtTile != null)
                 {
                     SetNewSelectedUnit(unitAtTile);
                 }

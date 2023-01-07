@@ -19,6 +19,7 @@ public abstract class BaseUnit : MonoBehaviour
     [Header("Current Piece State")]
     public Vector3Int currentTilePosition;
     public float currentHealth;
+    public int timesMoved = 0;
 
     public virtual void Start()
     {
@@ -74,6 +75,7 @@ public abstract class BaseUnit : MonoBehaviour
         ChessManager.Instance.allUnits.RenameKey(currentTilePosition, tilePos);
         currentTilePosition = tilePos;
         transform.position = ChessManager.Instance.validTilemap.GetCellCenterWorld(tilePos);
+        timesMoved++;
     }
 
     //HEALTH STATUS-RELATED
